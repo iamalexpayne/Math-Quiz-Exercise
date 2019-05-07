@@ -5,12 +5,11 @@
 		</div>
 		<div class="card-body">
 			<div class="row">
-				<div class="col-sm-6 text-center" v-for="option in content.options">
-					<button class="btn btn-primary">{{ option }}</button>
+				<div class="col-sm-6 text-center" v-for="(option, index) in content.options" :key="option">
+					<button class="btn btn-primary" @click="answerChosen(index)">{{ option }}</button>
 				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -18,6 +17,11 @@
 export default {
 	props: {
 		content: Object
+	},
+	methods: {
+		answerChosen(index) {
+			this.$emit('answerChosen', index)
+		}
 	}
 }
 </script>

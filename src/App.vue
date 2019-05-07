@@ -9,10 +9,8 @@
 		<div class="row">
 			<div class="col-md-6 col-xs-6 offset-md-3 offset-xs-6">
 				<div class="card">
-
-						<question :content="question"></question>
-						<answer></answer>
-
+					<component :is="currentCard" :content="question" @answerChosen="determineResult" @next="nextQuestion">
+					</component>
 				</div>
 			</div>
 		</div>
@@ -30,10 +28,64 @@ export default {
 	},
 	data() {
 		return {
-			question: {
-				question: 'What is x + y?',
-				options: [1,23,52,63]
+			question: this.determineQuestionParts(),
+			mode: 0
+		}
+	},
+	computed: {
+		currentCard() {
+			return this.mode ? 'answer' : 'question'
+		}
+	},
+	methods: {
+		shuffle(array) {
+			let currentIndex = array.length
+			let randomIndex, temp
+			while (currentIndex !== 0) {
+				randomIndex = Math.floor(Math.random() * currentIndex)
+				currentIndex--
+
+				temp = array[currentIndex]
+				array[currentIndex] = array[randomIndex]
+				array[randomIndex] = temp
 			}
+			return array
+		},
+		randomNumberBetween(min,max) {
+			return Math.floor(Math.random() * (max - min + 1) + min)
+		},
+		determineOptions(answer, operation) {
+			let littleBigger = answer + this.randomNumberBetween(1, 3)
+			let littleSmaller = answer - this.randomNumberBetween(1, 3)
+			const someNum = this.randomNumberBetween(3, 25)
+			let wayOff = operation ? answer + someNum : answer - someNum
+			let options = [answer, littleBigger, littleSmaller, wayOff]
+			options = this.shuffle(options)
+			return options
+		},
+		determineQuestionParts() {
+			const a = this.randomNumberBetween(1,999)
+			const b = this.randomNumberBetween(1,999)
+			const operation = Math.floor(Math.random() * 2)
+			const answer = operation ? a + b : a - b
+			const options = this.determineOptions(answer, operation)
+			return {
+				question: `What is ${a} ${ operation ? '+' : '-' } ${b}?`,
+				options,
+				answer
+			}
+		},
+		determineResult(event) {
+			const answer = this.question.options[event]
+			if (answer === this.question.answer) {
+				this.mode = 1
+			} else {
+				alert('Wrong answer! \n\n Try again.')
+			}
+		},
+		nextQuestion() {
+			this.question = this.determineQuestionParts()
+			this.mode = 0
 		}
 	}
 }
@@ -50,6 +102,6 @@ export default {
 
 	.card {
 		box-shadow: 0 4px 8px lightgray;
-		border-radius: 8px;
+		border-radius: 8px !important;
 	}
 </style>
