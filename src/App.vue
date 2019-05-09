@@ -6,11 +6,18 @@
 			</div>
 		</div>
 		<hr>
+		<br>
 		<div class="row">
 			<div class="col-md-6 col-xs-6 offset-md-3 offset-xs-6">
 				<div class="card">
-					<component :is="currentCard" :content="question" @answerChosen="determineResult" @next="nextQuestion">
-					</component>
+					<transition name="flip" mode="out-in">
+						<component
+							class="animated flipInY"
+							:is="currentCard"
+							:content="question"
+							@answerChosen="determineResult"
+							@next="nextQuestion"/>
+					</transition>
 				</div>
 			</div>
 		</div>
@@ -104,4 +111,19 @@ export default {
 		box-shadow: 0 4px 8px lightgray;
 		border-radius: 8px !important;
 	}
+</style>
+
+<style scoped>
+.flip-enter {
+
+}
+.flip-enter-active {
+
+}
+.flip-leave {
+
+}
+.flip-leave-active {
+
+}
 </style>
