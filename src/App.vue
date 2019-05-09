@@ -9,16 +9,13 @@
 		<br>
 		<div class="row">
 			<div class="col-md-6 col-xs-6 offset-md-3 offset-xs-6">
-				<div class="card">
-					<transition name="flip" mode="out-in">
-						<component
-							class="animated flipInY"
-							:is="currentCard"
-							:content="question"
-							@answerChosen="determineResult"
-							@next="nextQuestion"/>
-					</transition>
-				</div>
+				<transition name="flip" mode="out-in">
+					<component
+						:is="currentCard"
+						:content="question"
+						@answerChosen="determineResult"
+						@next="nextQuestion"/>
+				</transition>
 			</div>
 		</div>
 	</div>
@@ -111,19 +108,37 @@ export default {
 		box-shadow: 0 4px 8px lightgray;
 		border-radius: 8px !important;
 	}
-</style>
 
-<style scoped>
-.flip-enter {
+	.flip-enter {
+		/* transform: rotateY(0deg); */
+	}
 
-}
-.flip-enter-active {
+	.flip-enter-active {
+		animation: flip-in 0.5s ease-out forwards;
+	}
 
-}
-.flip-leave {
+	.flip-leave {
+		/* transform: rotateY(0deg); */
+	}
 
-}
-.flip-leave-active {
+	.flip-leave-active {
+		animation: flip-out 0.5s ease-out forwards;
+	}
 
-}
+	@keyframes flip-out {
+		from {
+			transform: rotateY(0deg);
+		} to {
+			transform: rotateY(90deg);
+		}
+	}
+
+	@keyframes flip-in {
+		from {
+			transform: rotateY(90deg);
+		}
+		to {
+			transform: rotateY(0deg);
+		}
+	}
 </style>

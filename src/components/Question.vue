@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="card">
 		<div class="card-header">
 			<h4>{{ content.question }}</h4>
 		</div>
